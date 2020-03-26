@@ -1,0 +1,4 @@
+=== meta
+
+email: jj@di.uminho.pt
+author: J.João
