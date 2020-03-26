@@ -42,6 +42,26 @@ void freeFile(File f){
     free(f);
 }
 
+int main(){
+
+    File f = initFile();
+    File s = initFile();
+    
+    
+    
+    push(f,s);
+    setName(f, "boas ");
+    setName(s , "pinguins");
+    s = initFile();
+    char* sd = strdup(f->sub[0]->nome);
+    char* eaiuf = strdup(strcat(f->nome, sd));
+    printf("%s\n" , eaiuf);
+
+    freeFile(f);
+    return 0;
+
+}
+
 
 
 
