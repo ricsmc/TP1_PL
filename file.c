@@ -14,34 +14,48 @@ int isFolder(File f){
 
 File initFile(){
     File f = malloc(sizeof(struct file));
-    f->nome = NULL;
+    f->nome = NULL ;
     f->size = 0;
-    f->capacity = 10;
-    f->sub = malloc(f->capacity * sizeof(struct file));
+    f->capacity = 10 * sizeof(struct file);
+    f->sub = malloc(10 * sizeof(struct file));
+
     return f;
 }
 
 void push(File f, File sub){
-    if( f->size <=  f->capacity){
-          realloc(f->sub, sizeof(f->sub) * 2);
-          f->capacity = sizeof(f->sub) * 2;
+    if( f->size >=  f->capacity){
+          realloc(f->sub, f->capacity * 2);
+          f->capacity = f->capacity * 2;
      }
-     f->sub[f->size] = sub;
-     f->size++;
+     f->sub[f->size / sizeof(struct file)] = sub;
+     f->size+=sizeof(struct file);
 }
 
 void setName(File f, char* name){
     f->nome = strdup(name);
 }
 
-void freeFile(File f){
-    free(f->nome);
-    for(int i = 0; i < f->size ; i++)
-        freeFile(f->sub[i]);
-
-    free(f);
+char* getName(File f){
+    return f->nome;
 }
 
+File getSub(File f, int pos){
+    printf("%p\n", f->sub[pos]);
+    return f->sub[pos];
+}
+
+void freeFile(File f){
+    if(f == NULL) return;
+    free(f->nome);
+    for(int i = 0; i < (f->size) / (sizeof(struct file)) ; i++)
+        freeFile(f->sub[i]);
+    
+    free(f->sub);
+    free(f);
+
+}
+
+/*
 int main(){
 
     File f = initFile();
@@ -61,6 +75,7 @@ int main(){
     return 0;
 
 }
+*/
 
 
 
