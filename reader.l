@@ -21,6 +21,15 @@ char* myCat (char* original, char* apendice){
   return new_str;
 }
 
+void mkMakeFile(char* str){
+    FILE* mk;
+    mk = fopen("Makefile", "w");
+    for (int i = 0; str[i] != '\0'; i++) {
+            fputc(str[i], mk);
+        }
+    fclose(mk);
+}
+
 %}
 
 %s META TREE MAKEFILE MD FL README NAME
@@ -145,6 +154,7 @@ int main(int argc, char** argv){
 
   yylex();
   printf("\n\n%s\n", make);
+  mkMakeFile(make);
 
   freeFile(fol);
 

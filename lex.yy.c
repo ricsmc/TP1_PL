@@ -733,9 +733,18 @@ char* myCat (char* original, char* apendice){
   return new_str;
 }
 
-#line 737 "lex.yy.c"
+void mkMakeFile(char* str){
+    FILE* mk;
+    mk = fopen("Makefile", "w");
+    for (int i = 0; str[i] != '\0'; i++) {
+            fputc(str[i], mk);
+        }
+    fclose(mk);
+}
 
-#line 739 "lex.yy.c"
+#line 746 "lex.yy.c"
+
+#line 748 "lex.yy.c"
 
 #define INITIAL 0
 #define META 1
@@ -959,15 +968,15 @@ YY_DECL
 		}
 
 	{
-#line 28 "reader.l"
+#line 37 "reader.l"
 
-#line 30 "reader.l"
+#line 39 "reader.l"
     
     BEGIN 0; 
 
   
 
-#line 971 "lex.yy.c"
+#line 980 "lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -1027,52 +1036,52 @@ do_action:	/* This label is used only to access EOF actions. */
 case 1:
 /* rule 1 can match eol */
 YY_RULE_SETUP
-#line 35 "reader.l"
+#line 44 "reader.l"
 ;
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 36 "reader.l"
+#line 45 "reader.l"
 { BEGIN META; }
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 38 "reader.l"
+#line 47 "reader.l"
 { BEGIN TREE; }
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 40 "reader.l"
+#line 49 "reader.l"
 { BEGIN MAKEFILE;}
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 42 "reader.l"
+#line 51 "reader.l"
 { BEGIN MD; }
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 44 "reader.l"
+#line 53 "reader.l"
 { BEGIN FL; }
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 46 "reader.l"
+#line 55 "reader.l"
 { BEGIN README; }
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 48 "reader.l"
+#line 57 "reader.l"
 {email = strdup(yytext+7);}
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 49 "reader.l"
+#line 58 "reader.l"
 {author = strdup(yytext+8);}
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 52 "reader.l"
+#line 61 "reader.l"
 {   
   
                     fol=initFile(); 
@@ -1082,7 +1091,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 59 "reader.l"
+#line 68 "reader.l"
 {
                       subfol=initFile();
                       if(!strcmp(yytext+2, "{%name%}/")) setName(subfol, namefol);
@@ -1092,7 +1101,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 66 "reader.l"
+#line 75 "reader.l"
 {
                         file=initFile();
                         if(!strcmp(yytext+2, "{%name%}.md")) setName(file, strcat(name, ".md"));
@@ -1102,7 +1111,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 73 "reader.l"
+#line 82 "reader.l"
 {
                         file=initFile();
                         if(!strcmp(yytext+3, "{%name%}.md")) setName(file, strcat(name, ".md"));
@@ -1112,7 +1121,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 80 "reader.l"
+#line 89 "reader.l"
 {
                         file=initFile();
                         if(!strcmp(yytext+2, "{%name%}.fl")) setName(file, strcat(name, ".fl"));
@@ -1122,7 +1131,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 87 "reader.l"
+#line 96 "reader.l"
 {
                         file=initFile();
                         if(!strcmp(yytext+3, "{%name%}.fl")) setName(file, strcat(name, ".fl"));
@@ -1132,7 +1141,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 95 "reader.l"
+#line 104 "reader.l"
 {
                       file=initFile();
                       setName(file, "README");
@@ -1141,7 +1150,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 101 "reader.l"
+#line 110 "reader.l"
 {
                       file=initFile();
                       setName(file, "README");
@@ -1150,7 +1159,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 108 "reader.l"
+#line 117 "reader.l"
 { 
                       file=initFile();
                       setName(file, "Makefile");
@@ -1159,7 +1168,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 114 "reader.l"
+#line 123 "reader.l"
 {
                       file=initFile();
                       setName(file, "Makefile");
@@ -1168,41 +1177,41 @@ YY_RULE_SETUP
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 121 "reader.l"
+#line 130 "reader.l"
 { make=myCat(make,name); }
 	YY_BREAK
 case 21:
 /* rule 21 can match eol */
 YY_RULE_SETUP
-#line 122 "reader.l"
+#line 131 "reader.l"
 {make=myCat(make,yytext); }
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 126 "reader.l"
+#line 135 "reader.l"
 md=strdup(yytext);
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 130 "reader.l"
+#line 139 "reader.l"
 fl=strdup(yytext);
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 133 "reader.l"
+#line 142 "reader.l"
 ;
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 135 "reader.l"
+#line 144 "reader.l"
 ;
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 138 "reader.l"
+#line 147 "reader.l"
 ECHO;
 	YY_BREAK
-#line 1206 "lex.yy.c"
+#line 1215 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 case YY_STATE_EOF(META):
 case YY_STATE_EOF(TREE):
@@ -2214,7 +2223,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 138 "reader.l"
+#line 147 "reader.l"
 
 
 
@@ -2226,6 +2235,7 @@ int main(int argc, char** argv){
 
   yylex();
   printf("\n\n%s\n", make);
+  mkMakeFile(make);
 
   freeFile(fol);
 
