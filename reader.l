@@ -23,7 +23,7 @@ char* myCat (char* original, char* apendice){
 
 %}
 
-%s META TREE MAKEFILE MD FL README
+%s META TREE MAKEFILE MD FL README NAME
 %option noyywrap
 %%
     
@@ -36,7 +36,7 @@ char* myCat (char* original, char* apendice){
 
 ===[ ]tree { BEGIN TREE; }
 
-===[ ]Makefile { BEGIN MAKEFILE; }
+===[ ]Makefile { BEGIN MAKEFILE;}
 
 ===[ ]\{\%name\%\}\.md { BEGIN MD; }
 
@@ -117,8 +117,8 @@ char* myCat (char* original, char* apendice){
                     }
 
 
-<MAKEFILE>\{\%[a-zA-Z]+\%\} { make=myCat(make,name); }
-<MAKEFILE>[^"\{\%name\%\}"]* { make=myCat(make,yytext); }
+<MAKEFILE>\{\%name\%\} { make=myCat(make,name); }
+<MAKEFILE>[$%=0-9a-zA-Z:.-[ ]*]*[ \n\t\-]* {make=myCat(make,yytext); }
 
 
 
@@ -144,7 +144,7 @@ int main(int argc, char** argv){
   strcat(namefol , "/");
 
   yylex();
-  printf("%s\n", make);
+  printf("\n\n%s\n", make);
 
   freeFile(fol);
 
