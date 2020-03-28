@@ -5,27 +5,38 @@
 
 char* name, *namefol;
 File fol;
+char* author, * email;
+char* filename;
+char* make = "", *md = "", *fl;
+File subfol;
+File file;
 
 %}
 
 %s META TREE MAKEFILE MD FL README
 %option noyywrap
 %%
-    char* author, * email;
-    char* filename;
-    File subfol;
-    File file;
+    
     BEGIN 0; 
 
   
 
 [ \t\n\r] ;
 ===[ ]meta { BEGIN META; }
+
+===[ ]tree { BEGIN TREE; }
+
+===[ ]Makefile { BEGIN MAKEFILE; }
+
+===[ ]\{\%name\%\}\.md { BEGIN MD; }
+
+===[ ]\{\%name\%\}\.fl { BEGIN FL; }
+
+===[ ]README { BEGIN README; }
+
 <META>email:[ ].+ {email = strdup(yytext+7);}
 <META>author:[ ].+ {author = strdup(yytext+8);}
 
-\#.+ ;
-===[ ]tree { BEGIN TREE; }
 
 <TREE>[a-zA-Z\{\}\%]+\/ {   
   
@@ -97,13 +108,21 @@ File fol;
 
 
 
-===[ ]Makefile { BEGIN MAKEFILE; }
 
-===[ ]\{\%name\%\}\.md { BEGIN MD; }
+<MAKEFILE>.*? make=strdup(yytext);
 
-===[ ]\{\%name\%\}\.fl { BEGIN FL; }
 
-===[ ]README { BEGIN README; }
+<MD>.+ md=strdup(yytext);
+
+
+
+<FL>.+ fl=strdup(yytext);;
+
+
+<README>.+ ;
+
+\#.+ ;
+
 
 %%
 
@@ -114,13 +133,7 @@ int main(int argc, char** argv){
 
   yylex();
 
-  File oi = getSub(fol,3);
-  char* bruh = strdup(getName(oi));
-  printf("\n%s\n", bruh);
-
-
   freeFile(fol);
-
 
 
   return 0;
