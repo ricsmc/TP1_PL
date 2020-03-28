@@ -11,6 +11,16 @@ char* make = "", *md = "", *fl;
 File subfol;
 File file;
 
+char* myCat (char* original, char* apendice){
+  char* new_str;
+  if((new_str = malloc(strlen(original)+strlen(apendice)+1)) != NULL){
+    new_str[0] = '\0';
+    strcat(new_str,original);
+    strcat(new_str,apendice);
+  } 
+  return new_str;
+}
+
 %}
 
 %s META TREE MAKEFILE MD FL README
@@ -107,16 +117,16 @@ File file;
                     }
 
 
+<MAKEFILE>\{\%[a-zA-Z]+\%\} { make=myCat(make,name); }
+<MAKEFILE>[^"\{\%name\%\}"]* { make=myCat(make,yytext); }
 
-
-<MAKEFILE>.*? make=strdup(yytext);
 
 
 <MD>.+ md=strdup(yytext);
 
 
 
-<FL>.+ fl=strdup(yytext);;
+<FL>.+ fl=strdup(yytext);
 
 
 <README>.+ ;
@@ -126,12 +136,15 @@ File file;
 
 %%
 
+
+
 int main(int argc, char** argv){
   name = strdup(argv[1]);
   namefol = strdup(argv[1]);
   strcat(namefol , "/");
 
   yylex();
+  printf("%s\n", make);
 
   freeFile(fol);
 

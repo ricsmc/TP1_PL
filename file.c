@@ -24,7 +24,7 @@ File initFile(){
 
 void push(File f, File sub){
     if( f->size >=  f->capacity){
-          realloc(f->sub, f->capacity * 2);
+          int* ignore = (int*) realloc(f->sub, f->capacity * 2);
           f->capacity = f->capacity * 2;
      }
      f->sub[f->size / sizeof(struct file)] = sub;
