@@ -7,7 +7,8 @@ char* name, *namefol;
 File fol;
 char* author, * email;
 char* filename;
-char* make = "", *md = "", *fl;
+char* make = "", *readme = "", *flStr = "";
+char* mdStr = "";
 File subfol;
 File file;
 
@@ -29,6 +30,41 @@ void mkMakeFile(char* str){
         }
     fclose(mk);
 }
+
+void mkMD(char* str){
+    FILE* md;
+    char* file_name = "";
+    file_name = myCat (file_name, name);
+    file_name = myCat (file_name, ".md");
+    md = fopen(file_name, "w");
+    for (int i = 0; str[i] != '\0'; i++) {
+            fputc(str[i], md);
+        }
+    fclose(md);
+}
+
+void mkFL(char* str){
+    FILE* fl;
+    char* file_name = "";
+    file_name = myCat (file_name, name);
+    file_name = myCat (file_name, ".fl");
+    fl = fopen(file_name, "w");
+    for (int i = 0; str[i] != '\0'; i++) {
+            fputc(str[i], fl);
+        }
+    fclose(fl);
+}
+
+void mkREADME(char* str){
+    FILE* readme;
+    char* file_name = "README.md";
+    readme = fopen(file_name, "w");
+    for (int i = 0; str[i] != '\0'; i++) {
+            fputc(str[i], readme);
+        }
+    fclose(readme);
+}
+
 
 %}
 
@@ -73,28 +109,28 @@ void mkMakeFile(char* str){
 
 <TREE>\-[ ][a-zA-Z\{\}\%]+\.md {
                         file=initFile();
-                        if(!strcmp(yytext+2, "{%name%}.md")) setName(file, strcat(name, ".md"));
+                        if(!strcmp(yytext+2, "{%name%}.md")) setName(file, myCat(name, ".md"));
                         else setName(file, yytext+2);
                         push(fol, file);
                       }
 
 <TREE>\-\-[ ][a-zA-Z\{\}\%]+\.md {
                         file=initFile();
-                        if(!strcmp(yytext+3, "{%name%}.md")) setName(file, strcat(name, ".md"));
+                        if(!strcmp(yytext+3, "{%name%}.md")) setName(file, myCat(name, ".md"));
                         else setName(file, yytext+2);
                         push(subfol, file);
                       }   
 
 <TREE>\-[ ][a-zA-Z\{\}\%]+\.fl {
                         file=initFile();
-                        if(!strcmp(yytext+2, "{%name%}.fl")) setName(file, strcat(name, ".fl"));
+                        if(!strcmp(yytext+2, "{%name%}.fl")) setName(file, myCat(name, ".fl"));
                         else setName(file, yytext+2);
                         push(fol, file);
                       }
 
 <TREE>\-\-[ ][a-zA-Z\{\}\%]+\.fl {
                         file=initFile();
-                        if(!strcmp(yytext+3, "{%name%}.fl")) setName(file, strcat(name, ".fl"));
+                        if(!strcmp(yytext+3, "{%name%}.fl")) setName(file, myCat(name, ".fl"));
                         else setName(file, yytext+2);
                         push(subfol, file);
                       }                     
@@ -127,18 +163,20 @@ void mkMakeFile(char* str){
 
 
 <MAKEFILE>\{\%name\%\} { make=myCat(make,name); }
-<MAKEFILE>[$%=0-9a-zA-Z:.-[ ]*]*[ \n\t\-]* {make=myCat(make,yytext); }
+<MAKEFILE>[$%=0-9a-zA-Z:.-[ ]*]*[ \n\t\-]* { make=myCat(make,yytext); }
 
 
 
-<MD>.+ md=strdup(yytext);
+<MD>\{\%name\%\} { mdStr=myCat(mdStr, name); }
+<MD>\{\%author\%\} { mdStr=myCat(mdStr, author); }
+<MD>\{\%email\%\} { mdStr=myCat(mdStr, email); }
+<MD>[*,#$%=0-9a-zA-Z:.-[ ]*]*[ \n\t\-]* { mdStr=myCat(mdStr, yytext); }
 
+<FL>[\n]+ { flStr=myCat(flStr, "\n"); }
+<FL>.+ { flStr=myCat(flStr, yytext); }
 
-
-<FL>.+ fl=strdup(yytext);
-
-
-<README>.+ ;
+<README>[\n]+ { readme=myCat(readme, "\n"); printf("what\n"); }
+<README>.+ { readme=myCat(readme, yytext); }
 
 \#.+ ;
 
@@ -153,8 +191,10 @@ int main(int argc, char** argv){
   strcat(namefol , "/");
 
   yylex();
-  printf("\n\n%s\n", make);
   mkMakeFile(make);
+  mkMD(mdStr);
+  mkFL(flStr);
+  mkREADME(readme);
 
   freeFile(fol);
 
