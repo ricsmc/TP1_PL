@@ -106,19 +106,45 @@ void mkREADME(char* str){
                       push(fol, subfol);
                     }
 
-<TREE>\-[ ][a-zA-Z\{\}\%]+\.md {
+<TREE>\-[ ][.a-zA-Z\{\}\%]+ {
                         file=initFile();
-                        if(!strcmp(yytext+2, "{%name%}.md")) setName(file, myCat(name, ".md"));
+                        char* token = strtok(yytext, "."); 
+                        char* ponto, *filename = "";
+                        int i = 0;
+   
+                        while (token != NULL) { 
+                          ponto = strdup(token);
+                          printf("%s\n", token);
+                          token = strtok(NULL, "."); 
+                          if(token!=NULL) filename=myCat(filename,ponto);
+                          i++;
+                        }
+                        printf("%s\n", filename);
+                        if(!strcmp(filename+2, "{%name%}")) setName(file, myCat(name, myCat(".", ponto)));
                         else setName(file, yytext+2);
                         push(fol, file);
                       }
 
-<TREE>\-\-[ ][a-zA-Z\{\}\%]+\.md {
+
+
+<TREE>\-\-[ ][.a-zA-Z\{\}\%]+ {
                         file=initFile();
-                        if(!strcmp(yytext+3, "{%name%}.md")) setName(file, myCat(name, ".md"));
-                        else setName(file, yytext+2);
+                        char* token = strtok(yytext, "."); 
+                        char* ponto, *filename = "";
+                        int i = 0;
+   
+                        while (token != NULL) { 
+                          ponto = strdup(token);
+                          printf("%s\n", token);
+                          token = strtok(NULL, "."); 
+                          if(token!=NULL) filename=myCat(filename,ponto);
+                          i++;
+                        }
+                        printf("%s\n", filename);
+                        if(!strcmp(filename+3, "{%name%}")) setName(file, myCat(name, myCat(".", ponto)));
+                        else setName(file, yytext+3);
                         push(subfol, file);
-                      }   
+                      }
 
 <TREE>\-[ ][a-zA-Z\{\}\%]+\.fl {
                         file=initFile();
@@ -133,19 +159,6 @@ void mkREADME(char* str){
                         else setName(file, yytext+2);
                         push(subfol, file);
                       }                     
-
-
-<TREE>\-[ ]README {
-                      file=initFile();
-                      setName(file, "README");
-                      push(fol, file);
-                    }
-
-<TREE>\-\-[ ]README {
-                      file=initFile();
-                      setName(file, "README");
-                      push(subfol, file);
-                    }
 
 
 <TREE>\-[ ]Makefile { 
@@ -194,6 +207,8 @@ int main(int argc, char** argv){
   mkMD(mdStr);
   mkFL(flStr);
   mkREADME(readme);
+
+  printf("%s\n", getName(getSub(fol,4)));
 
   freeFile(fol);
 
