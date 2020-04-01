@@ -1,9 +1,9 @@
 
 
-ric: ric.fl
-	flex ric.fl
-	cc -o ric lex.yy.c
+nome: nome.fl
+	flex nome.fl
+	cc -o nome lex.yy.c
 
-install: ric
-	cp ric /usr/local/bin/
+install: nome
+	cp nome /usr/local/bin/
 

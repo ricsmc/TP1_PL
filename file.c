@@ -8,7 +8,7 @@ struct file{
 };
 
 int isFolder(File f){
-    if(f->nome[ strlen(f->nome)-1 ] == '/') return 1;
+    if(!strcmp(f->nome[ strlen(f->nome)-1 ],"/")) return 1;
     else return 0;
 }
 
@@ -55,27 +55,6 @@ void freeFile(File f){
 
 }
 
-/*
-int main(){
-
-    File f = initFile();
-    File s = initFile();
-    
-    
-    
-    push(f,s);
-    setName(f, "boas ");
-    setName(s , "pinguins");
-    s = initFile();
-    char* sd = strdup(f->sub[0]->nome);
-    char* eaiuf = strdup(strcat(f->nome, sd));
-    printf("%s\n" , eaiuf);
-
-    freeFile(f);
-    return 0;
-
-}
-*/
 
 
 

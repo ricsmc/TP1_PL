@@ -76,18 +76,17 @@ void mkREADME(char* str){
 
   
 
-[ \t\n\r] ;
-===[ ]meta { BEGIN META; }
+<*>===[ ]meta { BEGIN META; }
 
-===[ ]tree { BEGIN TREE; }
+<*>===[ ]tree { BEGIN TREE; }
 
-===[ ]Makefile { BEGIN MAKEFILE;}
+<*>===[ ]Makefile { BEGIN MAKEFILE;}
 
-===[ ]\{\%name\%\}\.md { BEGIN MD; }
+<*>===[ ]\{\%name\%\}\.md { BEGIN MD; }
 
-===[ ]\{\%name\%\}\.fl { BEGIN FL; }
+<*>===[ ]\{\%name\%\}\.fl { BEGIN FL; }
 
-===[ ]README { BEGIN README; }
+<*>===[ ]README { BEGIN README; }
 
 <META>email:[ ].+ {email = strdup(yytext+7);}
 <META>author:[ ].+ {author = strdup(yytext+8);}
@@ -163,22 +162,23 @@ void mkREADME(char* str){
 
 
 <MAKEFILE>\{\%name\%\} { make=myCat(make,name); }
-<MAKEFILE>[$%=0-9a-zA-Z:.-[ ]*]*[ \n\t\-]* { make=myCat(make,yytext); }
+<MAKEFILE>.|\n { make=myCat(make,yytext); }
 
 
 
 <MD>\{\%name\%\} { mdStr=myCat(mdStr, name); }
 <MD>\{\%author\%\} { mdStr=myCat(mdStr, author); }
 <MD>\{\%email\%\} { mdStr=myCat(mdStr, email); }
-<MD>[*,#$%=0-9a-zA-Z:.-[ ]*]*[ \n\t\-]* { mdStr=myCat(mdStr, yytext); }
+<MD>.|\n { mdStr=myCat(mdStr, yytext); }
 
-<FL>[\n]+ { flStr=myCat(flStr, "\n"); }
-<FL>.+ { flStr=myCat(flStr, yytext); }
 
-<README>[\n]+ { readme=myCat(readme, "\n"); printf("what\n"); }
-<README>.+ { readme=myCat(readme, yytext); }
+<FL>.|\n { flStr=myCat(flStr, yytext); }
 
-\#.+ ;
+<README>.*[\n]* { readme=myCat(readme, yytext); }
+
+[ \t\n\r] ;
+
+<META,TREE,MAKEFILE,FL,NAME>\#.* ;
 
 
 %%
@@ -189,7 +189,6 @@ int main(int argc, char** argv){
   name = strdup(argv[1]);
   namefol = strdup(argv[1]);
   strcat(namefol , "/");
-
   yylex();
   mkMakeFile(make);
   mkMD(mdStr);
