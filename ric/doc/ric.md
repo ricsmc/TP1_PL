@@ -1,11 +1,11 @@
 
 # NAME
 
-nome - o nosso fabuloso filtro ...FIXME
+ric - o nosso fabuloso filtro ...FIXME
 
 ## Synopsis
 
-   nome file*
+   ric file*
 
 ## Description
 
