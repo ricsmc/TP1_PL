@@ -1,5 +1,1 @@
-
-
-FIXME: descrição sumária do filtro
-Mais cenas
-Mais texto
+Trabalho de Processamento de Linguagens 1, 19/20
