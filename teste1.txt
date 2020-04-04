@@ -1,0 +1,23 @@
+=== meta
+
+email: a84302@alunos.uminho.pt
+author: J.Cunha
+
+=== tree
+
+pasta1/
+- pasta2/
+-- pasta3/
+--- ficheiro.c
+--- pasta4/
+---- {%name%}.ml
+- README
+
+=== README
+Teste ao nome : {%name%}, autor : {%author%}, e-mail : {%email%}, a várias pastas e à ordem da escrita dos ficheiros.
+
+=== {%name%}.ml
+Teste.
+
+=== ficheiro.c
+#include <stdio.h>
