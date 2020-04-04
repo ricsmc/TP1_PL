@@ -1,0 +1,14 @@
+=== meta
+
+email: a84439@alunos.uminho.pt
+author: L.Vila
+
+=== tree
+
+{%name%}/
+- file1.c
+ola/
+file2.md
+
+=== file2.md
+Teste à criação de ficheiros na pasta origem.

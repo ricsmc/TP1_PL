@@ -21,7 +21,6 @@ char* noHifen(char* nome);
 %%
     
     BEGIN 0; 
-
   
 
 <*>===[ ]meta { BEGIN META; }
@@ -48,12 +47,13 @@ char* noHifen(char* nome);
           }
 
 
-<META>email:[ ].+ {email = strdup(yytext+7);}
+<META>email:[ ].+ {email = strdup(yytext+7); }
 <META>author:[ ].+ {author = strdup(yytext+8);}
 
 
-<TREE>[-]*[ ]*[a-zA-Z\{\}\%]+\/ {
+<TREE>[-]*[ ]*[0-9a-zA-Z\{\}\%]+\/ {
                       Tree sube = fol;
+
                       for(int i = 0 ; i < countHifen(yytext) ; i++){
                         sube = getSub(sube,getTamanho(sube)-1);
                       }
@@ -64,9 +64,8 @@ char* noHifen(char* nome);
                     }
 
 
-<TREE>[-]*[ ]*[.a-zA-Z\{\}\%]+ {
+<TREE>[-]*[ ]*[0-9.a-zA-Z\{\}\%]+ {
                         Tree sube = fol;
-                        
                         for(int i = 0 ; i < countHifen(yytext) ; i++){
                           sube = getSub(sube,getTamanho(sube)-1);
                         }
@@ -120,11 +119,13 @@ int countHifen(char* nome){
 }
 
 int main(int argc, char** argv){
+
   fol=initTree();
   setName(fol,"{%name%}");
   name = strdup(argv[1]);
   yyin = fopen(argv[2],"r");
   yylex();
+
   create(fol);
   freeTree(fol);
 
